@@ -1,65 +1,12 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <title>Space Invaders</title>
-    <style>
-        #gameCanvas {
-            border:1px double black;
-        }
-    </style>
-    <script>
-        var invaders = [];
-        var numLives = 3;
-        var canvas;
-        var context;
-
-        window.onload = function() {
-            canvas = document.getElementById("gameCanvas");
-            context = canvas.getContext("2d");
-            //canvas.onmousedown = animate;
-            animate();
-        };
-
-        function Invader(x, y) {
-            this.x = x;
-            this.y = y;
-        }
-
-        function animate() {
-            var dirx = 1;
-            var diry = 1;
-            var invader = new Invader(10, 10);
-            var chX = 10;
-            //context.fillRect(100, 100, 40, 40);
-            invaders.push(new Invader(20, 20));
-            //invaders.push(new Invader(30, 30));
-            //invaders.push(new Invader(300, 300));
-            while (numLives > 0) {
-                for (var i = 0; i<40; i++) {
-                    setTimeout(function () {move(dirx, chX);}, 4000);
-                }
-                for (var invader in invaders) {
-                    invaders[invader].y += diry*10;
-                }
-                dirx *= -1;
-                numLives--;
-            }
-        }
-
-        function move(dirx, chX) {
-            for (var invader in invaders) {
-                invaders[invader].x += dirx*chX;
-                console.log("x: " + invaders[invader].x)
-                context.fillRect(invaders[invader].x, invaders[invader].y, 20, 20);
-            }
-        }
-
-    </script>
-</head>
-<body>
-
-<canvas id="gameCanvas" width="500" height="400"></canvas>
-
-</body>
+    <head>
+        <meta charset="utf-8">
+        <title>Space Invaders</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="js\initialize.js" type='text/css'></script>
+    </head>
+    <body>
+        <canvas id="gameCanvas" width="500" height="400" style=''></canvas>
+    </body> 
 </html>
