@@ -38,7 +38,7 @@ window.onload = function() {
     paddle = new Paddle(250, 370);
     invaders = new Array(10);
     for (var i = 0; i < invaders.length; i++) {
-        invaders[i] = new Array(13);
+        invaders[i] = new Array(8);
     }
     initializeInvaders();
     draw();
@@ -46,14 +46,14 @@ window.onload = function() {
 
 function initializeInvaders(){
     var x = 45;
-    var y = 45;
+    var y = 20;
     for(var i = 0; i < invaders.length; i++){
         for(var j = 0; j < invaders[i].length; j++){
             invaders[i][j] = new Invader(x, y);
-            x += 30;
+            x += Math.round(canvas.width/11) + 10;
         }
         x = 45;
-        y += 15;
+        y += Math.round(canvas.height/40) + 10;
     }
 }
 
@@ -61,8 +61,8 @@ function draw(){
     context.clear(true);
     for(var i = 0; i < invaders.length; i++){
         for(var j = 0; j < invaders[i].length; j++){
-            context.fillStyle = "#000000";
-            context.fillRect(invaders[i][j].x, invaders[i][j].y, 25, 10);
+            context.fillStyle = "#0B5FA5";
+            context.fillRect(invaders[i][j].x, invaders[i][j].y, Math.round(canvas.width/11), Math.round(canvas.height/40));
             if (descend){
                 invaders[i][j].y += 10;
             } else{
@@ -77,7 +77,7 @@ function draw(){
     if (descend){
         descend = false;
     } else{
-        if(invaders[0][12].x > (canvas.width * 0.92)){
+        if(invaders[0][7].x + Math.round(canvas.width/11) > (canvas.width * 0.98)){
             direction = 1;
             descend = true;
         } else if (invaders[0][0].x < (canvas.width * 0.03)) {
