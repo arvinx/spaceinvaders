@@ -2,15 +2,22 @@ var invaders;
 var canvas;
 var context;
 var direction = 0; //0 = right, 1 = left
-var paddle;
+var tank;
 var descend =false;
+var lasers = [];
 
 function Invader(x, y) {
     this.x = x;
     this.y = y;
+    this.hit = false;
 }
 
-function Paddle(x, y) {
+function tank(x, y) {
+    this.x = x;
+    this.y = y;
+}
+
+function laser(x, y){
     this.x = x;
     this.y = y;
 }
@@ -35,13 +42,48 @@ CanvasRenderingContext2D.prototype.clear =
 window.onload = function() {
     canvas = document.getElementById("gameCanvas");
     context = canvas.getContext("2d");
-    paddle = new Paddle(250, 370);
+
+    canvas.focus();
+
+    tank = new tank(canvas.width/2, canvas.height * 0.95);
+
     invaders = new Array(10);
     for (var i = 0; i < invaders.length; i++) {
         invaders[i] = new Array(8);
     }
+
     initializeInvaders();
+
     draw();
+
+    canvas.onkeydown= function(event){
+        var keyCode;
+        if (event == null){
+            keyCode = window.event.keyode;
+        } else{
+            keyCode = event.keyCode;
+        }
+        
+        switch(keyCode){
+            //left key
+            case 37:
+                moveTankLeft();
+                break;
+            //up key
+            case 38 || 32:
+                fire();
+                break;
+            //right key
+            case 39:
+                moveTankRight();
+                break;
+            //down key
+            case 40:
+                break;
+            default:
+                break;
+        }
+    }
 }
 
 function initializeInvaders(){
@@ -57,12 +99,40 @@ function initializeInvaders(){
     }
 }
 
+function fire(){
+    //Implement laser firing
+}
+
+function moveTankLeft(){
+    context.clearRect(tank.x, tank.y, 30,12);
+    if (tank.x - 5 > 0){
+        tank.x -= 5;
+    }
+    context.fillStyle = "000000";
+    context.fillRect(tank.x, tank.y, 30, 12);
+}
+
+function moveTankRight(){
+    context.clearRect(tank.x, tank.y, 30,12);
+    if (tank.x + 35 < canvas.width){
+        tank.x += 5;
+    }
+    context.fillStyle = "000000";
+    context.fillRect(tank.x, tank.y, 30, 12);
+}
+
 function draw(){
     context.clear(true);
     for(var i = 0; i < invaders.length; i++){
         for(var j = 0; j < invaders[i].length; j++){
-            context.fillStyle = "#0B5FA5";
-            context.fillRect(invaders[i][j].x, invaders[i][j].y, Math.round(canvas.width/11), Math.round(canvas.height/40));
+            if (invaders[i][j].hit == false){
+                if(invaders[i][j].y + Math.round(canvas.height/40) > canvas.height * 0.95){
+                    //lost the game...do something here.
+                }
+                context.fillStyle = "#0B5FA5";
+                context.fillRect(invaders[i][j].x, invaders[i][j].y, Math.round(canvas.width/11), 
+                    Math.round(canvas.height/40));
+            }
             if (descend){
                 invaders[i][j].y += 10;
             } else{
@@ -85,5 +155,7 @@ function draw(){
             descend = true;
         }
     }
+    context.fillStyle = "000000";
+    context.fillRect(tank.x, tank.y, 30, 12);
     setTimeout(function() {draw();}, 800);
 }    
