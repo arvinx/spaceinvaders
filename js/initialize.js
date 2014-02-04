@@ -5,6 +5,7 @@ var direction = 0; //0 = right, 1 = left
 var tank;
 var descend =false;
 var laser = null;
+var invaderSpeed;
 
 //constants
 var numColInvaders = 8;
@@ -51,8 +52,96 @@ CanvasRenderingContext2D.prototype.clear =
 window.onload = function() {
     canvas = document.getElementById("gameCanvas");
     context = canvas.getContext("2d");
-
     canvas.focus();
+    keySetup("menu");
+    menuSetup();
+}
+
+function menuSetup(){
+    context.clear(true);
+    context.font = '20pt Arial';
+    context.textAlign = "center";
+    context.fillStyle = "#000000";
+    context.fillText("AppInvaders", canvas.width/2, canvas.height/5);
+
+    context.font = '15pt Arial';
+    context.textAlign = "center";
+    context.fillStyle = "#000000";
+    context.fillText("Press 1 to begin Level 1", canvas.width/2, canvas.height/3.5);
+    context.fillText("Press 2 to begin Level 2", canvas.width/2, canvas.height/2.9);
+    context.fillText("Press 3 to begin Level 3", canvas.width/2, canvas.height/2.5);
+}
+
+function keySetup(type){
+    switch(type){
+        case "menu":
+            canvas.onkeyup = function(event){
+                var keyCode;
+                if(event == null){
+                    keyCode = window.event.keyCode;
+                } else {
+                    keyCode = event.keyCode;
+                }
+                switch(keyCode){
+                    case 49:
+                        initializeGame(1);
+                        invaderSpeed = 800;
+                        break;
+                    case 50:
+                        initializeGame(2);
+                        invaderSpeed = 500;
+                        break;
+                    case 51:
+                        initializeGame(3);
+                        invaderSpeed = 300;
+                        break;
+                    default:
+                        break;
+                }
+            }
+            break;
+        case "game":
+            canvas.onkeydown = function(event){
+                var keyCode;
+                if (event == null){
+                    keyCode = window.event.keyCode;
+                } else{
+                    keyCode = event.keyCode;
+                }
+                
+                switch(keyCode){
+                    //left key
+                    case 37:
+                        moveTankLeft();
+                        break;
+                    //up key
+                    case 32:
+                        fire();
+                        break;
+                    //right key
+                    case 38:
+                        fire();
+                        break;
+                    case 39:
+                        moveTankRight();
+                        break;
+                    //down key
+                    case 40:
+                        break;
+                    default:
+                        break;
+                }
+            }
+            break;
+        default:
+            canvas.onkeyup = null;
+            canvas.onkeydown = null;
+    }
+}
+
+function initializeGame(level){
+    canvas.onkeyup = null;
+    context.clear(true);
 
     invaderHeight = Math.round(canvas.width/40);
     invaderWidth = Math.round(canvas.width/11);
@@ -63,44 +152,7 @@ window.onload = function() {
     for (var i = 0; i < invaders.length; i++) {
         invaders[i] = new Array(numColInvaders);
     }
-
     initializeInvaders();
-
-    draw();
-
-    canvas.onkeydown= function(event){
-        var keyCode;
-        if (event == null){
-            keyCode = window.event.keyode;
-        } else{
-            keyCode = event.keyCode;
-        }
-
-        switch(keyCode){
-            //left key
-            case 37:
-                moveTankLeft();
-                break;
-            //right key
-            case 39:
-                moveTankRight();
-                break;
-            //up key
-            case 38:
-                fire();
-                break;
-            //space key
-            case 32:
-                fire();
-                break;
-            //down key
-            case 40:
-                break;
-            default:
-                break;
-        }
-    }
-
 }
 
 function initializeInvaders(){
@@ -114,6 +166,9 @@ function initializeInvaders(){
         x = 45;
         y += invaderHeight + 10;
     }
+
+    draw();
+    keySetup("game");
 }
 
 function fire(){
@@ -124,8 +179,8 @@ function fire(){
 
 function moveTankLeft(){
     context.clearRect(tank.x, tank.y, 30,12);
-    if (tank.x - 5 > 0){
-        tank.x -= 5;
+    if (tank.x - 8 > 0){
+        tank.x -= 8;
     }
     context.fillStyle = "#000000";
     context.fillRect(tank.x, tank.y, 30, 12);
@@ -133,8 +188,8 @@ function moveTankLeft(){
 
 function moveTankRight(){
     context.clearRect(tank.x, tank.y, 30,12);
-    if (tank.x + 35 < canvas.width){
-        tank.x += 5;
+    if (tank.x + 38 < canvas.width){
+        tank.x += 8;
     }
     context.fillStyle = "#000000";
     context.fillRect(tank.x, tank.y, 30, 12);
@@ -212,5 +267,5 @@ function draw(){
         context.fillStyle = "#000000";
         context.fillRect(laser.x, laser.y, laserWidth, laserHeight);
     }
-    setTimeout(function() {draw();}, 800);
+    setTimeout(function() {draw();}, invaderSpeed);
 }    
