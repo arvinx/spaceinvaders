@@ -118,7 +118,7 @@ function moveTankLeft(){
     if (tank.x - 5 > 0){
         tank.x -= 5;
     }
-    context.fillStyle = "000000";
+    context.fillStyle = "#000000";
     context.fillRect(tank.x, tank.y, 30, 12);
 }
 
@@ -127,7 +127,7 @@ function moveTankRight(){
     if (tank.x + 35 < canvas.width){
         tank.x += 5;
     }
-    context.fillStyle = "000000";
+    context.fillStyle = "#000000";
     context.fillRect(tank.x, tank.y, 30, 12);
 }
 
@@ -164,7 +164,7 @@ function draw(){
         }
         descend = true;
     }
-    context.fillStyle = "000000";
+    context.fillStyle = "#000000";
     context.fillRect(tank.x, tank.y, 30, 12);
     setTimeout(function() {draw();}, 800);
 }    
