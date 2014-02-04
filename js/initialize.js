@@ -6,6 +6,13 @@ var tank;
 var descend =false;
 var lasers = [];
 
+//constants
+var numColInvaders = 8;
+var numRowInvaders = 10;
+var heightInvader;
+var widthInvader;
+
+
 function Invader(x, y) {
     this.x = x;
     this.y = y;
@@ -45,11 +52,14 @@ window.onload = function() {
 
     canvas.focus();
 
+    heightInvader = Math.round(canvas.width/40);
+    widthInvader = Math.round(canvas.width/11);
+
     tank = new tank(canvas.width/2, canvas.height * 0.95);
 
-    invaders = new Array(10);
+    invaders = new Array(numRowInvaders);
     for (var i = 0; i < invaders.length; i++) {
-        invaders[i] = new Array(8);
+        invaders[i] = new Array(numColInvaders);
     }
 
     initializeInvaders();
@@ -92,10 +102,10 @@ function initializeInvaders(){
     for(var i = 0; i < invaders.length; i++){
         for(var j = 0; j < invaders[i].length; j++){
             invaders[i][j] = new Invader(x, y);
-            x += Math.round(canvas.width/11) + 10;
+            x += widthInvader + 10;
         }
         x = 45;
-        y += Math.round(canvas.height/40) + 10;
+        y += heightInvader + 10;
     }
 }
 
@@ -126,12 +136,12 @@ function draw(){
     for(var i = 0; i < invaders.length; i++){
         for(var j = 0; j < invaders[i].length; j++){
             if (invaders[i][j].hit == false){
-                if(invaders[i][j].y + Math.round(canvas.height/40) > canvas.height * 0.95){
-                    //lost the game...do something here.
+                if(invaders[i][j].y + heightInvader > canvas.height * 0.95){
+                    alert("game over");
+                    return;
                 }
                 context.fillStyle = "#0B5FA5";
-                context.fillRect(invaders[i][j].x, invaders[i][j].y, Math.round(canvas.width/11), 
-                    Math.round(canvas.height/40));
+                context.fillRect(invaders[i][j].x, invaders[i][j].y, widthInvader, heightInvader);
             }
             if (descend){
                 invaders[i][j].y += 10;
@@ -147,13 +157,12 @@ function draw(){
     if (descend){
         descend = false;
     } else{
-        if(invaders[0][7].x + Math.round(canvas.width/11) > (canvas.width * 0.98)){
+        if(invaders[0][numColInvaders - 1].x + widthInvader > (canvas.width * 0.98)){
             direction = 1;
-            descend = true;
         } else if (invaders[0][0].x < (canvas.width * 0.03)) {
             direction = 0;
-            descend = true;
         }
+        descend = true;
     }
     context.fillStyle = "000000";
     context.fillRect(tank.x, tank.y, 30, 12);
