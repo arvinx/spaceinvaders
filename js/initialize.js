@@ -159,10 +159,11 @@ function draw(){
     } else{
         if(invaders[0][numColInvaders - 1].x + widthInvader > (canvas.width * 0.98)){
             direction = 1;
+            descend = true;
         } else if (invaders[0][0].x < (canvas.width * 0.03)) {
             direction = 0;
+            descend = true;
         }
-        descend = true;
     }
     context.fillStyle = "#000000";
     context.fillRect(tank.x, tank.y, 30, 12);
