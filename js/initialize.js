@@ -19,6 +19,7 @@ var laserWidth = 1;
 var laserHeight = 8;
 var defenderHeight = 30;
 var defenderWidth = 30;
+var tankHeightRatio = 0.92;
 
 
 function Invader(x, y) {
@@ -152,7 +153,7 @@ function initializeGame(level){
     invaderHeight = Math.round(canvas.width/18);
     invaderWidth = Math.round(canvas.width/18); //11
 
-    tank = new Tank(canvas.width/2, canvas.height * 0.92);
+    tank = new Tank(canvas.width/2, canvas.height * tankHeightRatio);
 
     invaders = new Array(numRowInvaders);
     for (var i = 0; i < invaders.length; i++) {
@@ -223,14 +224,15 @@ function moveTankRight(){
 }
 
 function drawLaser() {
-    if(laser == null) return;
     if(invaders[0][0].y > laser.y) laser = null;
+    if (laser.y < 0) laser = null;
+    if(laser == null) return;
+
     context.clearRect(laser.x - 1, laser.y, laserWidth + 2, laserHeight);
     laser.y -=10;
     context.fillStyle = "#000000";
     context.fillRect(laser.x, laser.y, laserWidth, laserHeight);
 
-    if (laser.y < 0) laser = null;
     for(var i = invaders.length - 1; i >= 0; i--){
         for(var j = 0; j < invaders[i].length; j++){
             if (!invaders[i][j].hit) {
@@ -265,7 +267,7 @@ function draw(){
     for(var i = 0; i < invaders.length; i++){
         for(var j = 0; j < invaders[i].length; j++){
             if (invaders[i][j].hit == false){
-                if(invaders[i][j].y + invaderHeight > canvas.height * 0.95){
+                if(invaders[i][j].y + invaderHeight > canvas.height * tankHeightRatio){
                     alert("game over");
                     return;
                 }
