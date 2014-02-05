@@ -5,10 +5,11 @@ var direction = 0; //0 = right, 1 = left
 var tank;
 var defenderImg;
 var invaderImg;
-var descend =false;
+var descend = false;
 var laser = null;
 var invaderSpeed;
 var totalScore;
+var level;
 
 //constants
 var numColInvaders = 12;
@@ -91,14 +92,17 @@ function keySetup(type){
                 }
                 switch(keyCode){
                     case 49:
+                        level = 1;
                         initializeGame(1);
                         invaderSpeed = 800;
                         break;
                     case 50:
+                        level = 2;
                         initializeGame(2);
                         invaderSpeed = 500;
                         break;
                     case 51:
+                        level = 3;
                         initializeGame(3);
                         invaderSpeed = 300;
                         break;
@@ -236,14 +240,14 @@ function drawLaser() {
     for(var i = invaders.length - 1; i >= 0; i--){
         for(var j = 0; j < invaders[i].length; j++){
             if (!invaders[i][j].hit) {
-                checkLaserHit(i, j);
+                if (ifLaserHit(i, j)) break;
             }
         }
     }
     setTimeout(function() {drawLaser()}, 100);
 }
 
-function checkLaserHit(i, j) {
+function ifLaserHit(i, j) {
     if (((laser.x > invaders[i][j].x || (laser.x + laserWidth) > invaders[i][j].x)
         && (laser.x < (invaders[i][j].x + invaderWidth) || (laser.x + laserWidth) < (invaders[i][j].x + invaderWidth))
         )
@@ -254,6 +258,15 @@ function checkLaserHit(i, j) {
         invaders[i][j].hit = true;
         laser = null;
         totalScore += 1;
+        checkIfWon();
+        return true;
+    }
+    return false;
+}
+
+function checkIfWon () {
+    if (totalScore >= numColInvaders*numRowInvaders) {
+        alert("You have passed level: " + level);
     }
 }
 
