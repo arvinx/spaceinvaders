@@ -219,7 +219,7 @@ function drawLaser() {
     context.fillRect(laser.x, laser.y, laserWidth, laserHeight);
 
     if (laser.y < 0) laser = null;
-    for(var i = invaders.length - 1; i > 0; i--){
+    for(var i = invaders.length - 1; i >= 0; i--){
         for(var j = 0; j < invaders[i].length; j++){
             if (!invaders[i][j].hit) {
                 checkLaserHit(i, j);
