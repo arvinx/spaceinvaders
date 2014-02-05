@@ -165,19 +165,9 @@ function initializeGame(level){
     }
 
     defenderImg = new Image();
-    defenderImg.onload = function() {
-        context.drawImage(tank.x, tank.y, defenderWidth, defenderHeight);
-    };
     defenderImg.src = 'images/robot.png';
 
     invaderImg = new Image();
-    invaderImg.onload = function() {
-        for(var i = invaders.length - 1; i >= 0; i--){
-            for(var j = 0; j < invaders[i].length; j++){
-                context.drawImage(invaders[i][j].x, invaders[i][j].y, invaderWidth, invaderHeight);
-            }
-        }
-    };
     invaderImg.src = 'images/apple.png';
 
 
@@ -228,9 +218,10 @@ function moveTankRight(){
 }
 
 function drawLaser() {
+    if(laser == null) return;
     if(invaders[0][0].y > laser.y) laser = null;
     if (laser.y < 0) laser = null;
-    if(laser == null) return;
+
 
     context.clearRect(laser.x - 1, laser.y, laserWidth + 2, laserHeight);
     laser.y -=10;
@@ -248,6 +239,7 @@ function drawLaser() {
 }
 
 function ifLaserHit(i, j) {
+    if (laser == null) return;
     if (((laser.x > invaders[i][j].x || (laser.x + laserWidth) > invaders[i][j].x)
         && (laser.x < (invaders[i][j].x + invaderWidth) || (laser.x + laserWidth) < (invaders[i][j].x + invaderWidth))
         )

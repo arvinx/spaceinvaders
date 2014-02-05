@@ -4,7 +4,7 @@ To do:
 	laser firing - Arvin [finished],
 	Main Menu - Ammar [started],
 	Levels,
-	Images, - Arvin [started]
+	Images, - Arvin [done]
 	Game over,
-	score,
+	score - Arvin [done],
 
