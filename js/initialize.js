@@ -13,7 +13,7 @@ var level;
 
 //constants
 var numColInvaders = 12;
-var numRowInvaders = 5;
+var numRowInvaders = 3;
 var invaderHeight;
 var invaderWidth;
 var laserWidth = 1;
@@ -39,7 +39,7 @@ function Laser(x, y){
     this.y = y;
 }
 
-//Override clear, one would be the regular clear used by canvas, the other is 
+//Override clear, one would be the regular clear used by canvas, the other is
 //our own implementation, in which we can choose to or not to preserve the
 //transformation matrix of the canvas.
 CanvasRenderingContext2D.prototype.clear =
@@ -98,11 +98,13 @@ function keySetup(type){
                         break;
                     case 50:
                         level = 2;
+                        numRowInvaders = 3;
                         initializeGame(2);
                         invaderSpeed = 500;
                         break;
                     case 51:
                         level = 3;
+                        numRowInvaders = 4;
                         initializeGame(3);
                         invaderSpeed = 300;
                         break;
@@ -164,6 +166,7 @@ function initializeGame(level){
         invaders[i] = new Array(numColInvaders);
     }
 
+    //load images
     defenderImg = new Image();
     defenderImg.src = 'images/robot.png';
 
@@ -191,6 +194,7 @@ function initializeInvaders(){
 }
 
 function fire(){
+    //only fire if there isn't a laser being fired already
     if (laser != null) return;
     laser = new Laser(tank.x + invaderWidth/2, tank.y - invaderHeight);
     drawLaser();
@@ -203,8 +207,6 @@ function moveTankLeft(){
         tank.x -= 8;
     }
     context.drawImage(defenderImg, tank.x, tank.y, defenderWidth, defenderHeight);
-    //context.fillStyle = "#000000";
-    //context.fillRect(tank.x, tank.y, 30, 12);
 }
 
 function moveTankRight(){
@@ -213,12 +215,11 @@ function moveTankRight(){
         tank.x += 8;
     }
     context.drawImage(defenderImg, tank.x, tank.y, defenderWidth, defenderHeight);
-    //context.fillStyle = "#000000";
-    //context.fillRect(tank.x, tank.y, 30, 12);
 }
 
 function drawLaser() {
     if(laser == null) return;
+    //don't draw laser if its not going to hit anything
     if(invaders[0][0].y > laser.y) {
         laser = null;
         return;
@@ -246,6 +247,7 @@ function drawLaser() {
 
 function ifLaserHit(i, j) {
     if (laser == null) return;
+    //check if invader and laser overlap
     if (((laser.x > invaders[i][j].x || (laser.x + laserWidth) > invaders[i][j].x)
         && (laser.x < (invaders[i][j].x + invaderWidth) || (laser.x + laserWidth) < (invaders[i][j].x + invaderWidth))
         )
@@ -287,8 +289,6 @@ function draw(){
                     return;
                 }
                 context.drawImage(invaderImg, invaders[i][j].x, invaders[i][j].y, invaderWidth, invaderHeight);
-                //context.fillStyle = "#0B5FA5";
-                //context.fillRect(invaders[i][j].x, invaders[i][j].y, invaderWidth, invaderHeight);
             }
             if (descend){
                 invaders[i][j].y += 10;
@@ -312,8 +312,6 @@ function draw(){
             descend = true;
         }
     }
-    //context.fillStyle = "#000000";
-    //context.fillRect(tank.x, tank.y, 30, 12);
     context.drawImage(defenderImg, tank.x, tank.y, defenderWidth, defenderHeight);
     if (laser != null) {
         context.fillStyle = "#000000";
