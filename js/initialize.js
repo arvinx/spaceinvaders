@@ -7,6 +7,7 @@ var defenderImg;
 var descend =false;
 var laser = null;
 var invaderSpeed;
+var totalScore;
 
 //constants
 var numColInvaders = 8;
@@ -73,6 +74,7 @@ function menuSetup(){
     context.fillText("Press 1 to begin Level 1", canvas.width/2, canvas.height/3.5);
     context.fillText("Press 2 to begin Level 2", canvas.width/2, canvas.height/2.9);
     context.fillText("Press 3 to begin Level 3", canvas.width/2, canvas.height/2.5);
+    totalScore = 0;
 }
 
 function keySetup(type){
@@ -237,12 +239,17 @@ function checkLaserHit(i, j) {
     {
         invaders[i][j].hit = true;
         laser = null;
+        totalScore += 1;
     }
 }
 
 
 function draw(){
     context.clear(true);
+    context.font = '15pt Arial';
+    context.textAlign = "center";
+    context.fillStyle = "#000000";
+    context.fillText("Score: " + totalScore, 50, 20);
     for(var i = 0; i < invaders.length; i++){
         for(var j = 0; j < invaders[i].length; j++){
             if (invaders[i][j].hit == false){
