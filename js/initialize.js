@@ -250,7 +250,6 @@ function ifLaserHit(i, j) {
         invaders[i][j].hit = true;
         laser = null;
         totalScore += 1;
-        checkIfWon();
         return true;
     }
     return false;
@@ -259,7 +258,12 @@ function ifLaserHit(i, j) {
 function checkIfWon () {
     if (totalScore >= numColInvaders*numRowInvaders) {
         alert("You have passed level: " + level);
+        menuSetup();
+        keySetup("menu");
+        canvas.onkeydown = null;
+        return true;
     }
+    return false;
 }
 
 
@@ -308,6 +312,9 @@ function draw(){
     if (laser != null) {
         context.fillStyle = "#000000";
         context.fillRect(laser.x, laser.y, laserWidth, laserHeight);
+    }
+    if(checkIfWon()){
+        return;
     }
     setTimeout(function() {draw();}, invaderSpeed);
 }    
