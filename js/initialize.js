@@ -3,6 +3,7 @@ var canvas;
 var context;
 var direction = 0; //0 = right, 1 = left
 var tank;
+var defenderImg;
 var descend =false;
 var laser = null;
 var invaderSpeed;
@@ -14,6 +15,8 @@ var invaderHeight;
 var invaderWidth;
 var laserWidth = 1;
 var laserHeight = 8;
+var defenderHeight = 30;
+var defenderWidth = 30;
 
 
 function Invader(x, y) {
@@ -146,12 +149,19 @@ function initializeGame(level){
     invaderHeight = Math.round(canvas.width/40);
     invaderWidth = Math.round(canvas.width/11);
 
-    tank = new Tank(canvas.width/2, canvas.height * 0.95);
+    tank = new Tank(canvas.width/2, canvas.height * 0.92);
 
     invaders = new Array(numRowInvaders);
     for (var i = 0; i < invaders.length; i++) {
         invaders[i] = new Array(numColInvaders);
     }
+
+    defenderImg = new Image();
+    defenderImg.onload = function() {
+        context.drawImage(tank.x, tank.y, defenderWidth, defenderHeight);
+    };
+    defenderImg.src = 'images/robot.png';
+
     initializeInvaders();
 }
 
@@ -178,30 +188,34 @@ function fire(){
 }
 
 function moveTankLeft(){
-    context.clearRect(tank.x, tank.y, 30,12);
+    context.clearRect(tank.x, tank.y, defenderWidth, defenderHeight);
+    context.clear
     if (tank.x - 8 > 0){
         tank.x -= 8;
     }
-    context.fillStyle = "#000000";
-    context.fillRect(tank.x, tank.y, 30, 12);
+    context.drawImage(defenderImg, tank.x, tank.y, defenderWidth, defenderHeight);
+    //context.fillStyle = "#000000";
+    //context.fillRect(tank.x, tank.y, 30, 12);
 }
 
 function moveTankRight(){
-    context.clearRect(tank.x, tank.y, 30,12);
+    context.clearRect(tank.x, tank.y, defenderWidth, defenderHeight);
     if (tank.x + 38 < canvas.width){
         tank.x += 8;
     }
-    context.fillStyle = "#000000";
-    context.fillRect(tank.x, tank.y, 30, 12);
+    context.drawImage(defenderImg, tank.x, tank.y, defenderWidth, defenderHeight);
+    //context.fillStyle = "#000000";
+    //context.fillRect(tank.x, tank.y, 30, 12);
 }
 
 function drawLaser() {
-    if(laser != null) {
-        context.clearRect(laser.x - 1, laser.y, laserWidth + 2, laserHeight);
-        laser.y -=10;
-        context.fillStyle = "#000000";
-        context.fillRect(laser.x, laser.y, laserWidth, laserHeight);
-    }
+    if(laser == null) return;
+    if(invaders[0][0].y > laser.y) laser = null;
+    context.clearRect(laser.x - 1, laser.y, laserWidth + 2, laserHeight);
+    laser.y -=10;
+    context.fillStyle = "#000000";
+    context.fillRect(laser.x, laser.y, laserWidth, laserHeight);
+
     if (laser.y < 0) laser = null;
     for(var i = invaders.length - 1; i > 0; i--){
         for(var j = 0; j < invaders[i].length; j++){
@@ -261,8 +275,9 @@ function draw(){
             descend = true;
         }
     }
-    context.fillStyle = "#000000";
-    context.fillRect(tank.x, tank.y, 30, 12);
+    //context.fillStyle = "#000000";
+    //context.fillRect(tank.x, tank.y, 30, 12);
+    context.drawImage(defenderImg, tank.x, tank.y, defenderWidth, defenderHeight);
     if (laser != null) {
         context.fillStyle = "#000000";
         context.fillRect(laser.x, laser.y, laserWidth, laserHeight);
