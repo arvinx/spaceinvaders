@@ -4,14 +4,15 @@ var context;
 var direction = 0; //0 = right, 1 = left
 var tank;
 var defenderImg;
+var invaderImg;
 var descend =false;
 var laser = null;
 var invaderSpeed;
 var totalScore;
 
 //constants
-var numColInvaders = 8;
-var numRowInvaders = 10;
+var numColInvaders = 12;
+var numRowInvaders = 5;
 var invaderHeight;
 var invaderWidth;
 var laserWidth = 1;
@@ -113,7 +114,7 @@ function keySetup(type){
                 } else{
                     keyCode = event.keyCode;
                 }
-                
+
                 switch(keyCode){
                     //left key
                     case 37:
@@ -148,8 +149,8 @@ function initializeGame(level){
     canvas.onkeyup = null;
     context.clear(true);
 
-    invaderHeight = Math.round(canvas.width/40);
-    invaderWidth = Math.round(canvas.width/11);
+    invaderHeight = Math.round(canvas.width/18);
+    invaderWidth = Math.round(canvas.width/18); //11
 
     tank = new Tank(canvas.width/2, canvas.height * 0.92);
 
@@ -163,6 +164,17 @@ function initializeGame(level){
         context.drawImage(tank.x, tank.y, defenderWidth, defenderHeight);
     };
     defenderImg.src = 'images/robot.png';
+
+    invaderImg = new Image();
+    invaderImg.onload = function() {
+        for(var i = invaders.length - 1; i >= 0; i--){
+            for(var j = 0; j < invaders[i].length; j++){
+                context.drawImage(invaders[i][j].x, invaders[i][j].y, invaderWidth, invaderHeight);
+            }
+        }
+    };
+    invaderImg.src = 'images/apple.png';
+
 
     initializeInvaders();
 }
@@ -257,8 +269,9 @@ function draw(){
                     alert("game over");
                     return;
                 }
-                context.fillStyle = "#0B5FA5";
-                context.fillRect(invaders[i][j].x, invaders[i][j].y, invaderWidth, invaderHeight);
+                context.drawImage(invaderImg, invaders[i][j].x, invaders[i][j].y, invaderWidth, invaderHeight);
+                //context.fillStyle = "#0B5FA5";
+                //context.fillRect(invaders[i][j].x, invaders[i][j].y, invaderWidth, invaderHeight);
             }
             if (descend){
                 invaders[i][j].y += 10;
