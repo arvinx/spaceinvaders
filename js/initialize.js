@@ -219,8 +219,14 @@ function moveTankRight(){
 
 function drawLaser() {
     if(laser == null) return;
-    if(invaders[0][0].y > laser.y) laser = null;
-    if (laser.y < 0) laser = null;
+    if(invaders[0][0].y > laser.y) {
+        laser = null;
+        return;
+    }
+    if (laser.y < 0) {
+        laser = null;
+        return;
+    }
 
 
     context.clearRect(laser.x - 1, laser.y, laserWidth + 2, laserHeight);
