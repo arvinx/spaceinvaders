@@ -7,6 +7,8 @@ How it works:
 - key events trigger functions to move the Tank and to fire the Laser.
 - initializeGame() starts the game at a set level and is triggered from the menu
 by the user pressed specified keys.
+- initializeMenu() clears the canvas and draws the menu.
+- keySetup(menu) remaps the event handlers depending on whether you are on the menu or in the game.
 
 
 List of Datastructures:
