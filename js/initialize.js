@@ -286,6 +286,9 @@ function draw(){
             if (invaders[i][j].hit == false){
                 if(invaders[i][j].y + invaderHeight > canvas.height * tankHeightRatio){
                     alert("game over");
+                    menuSetup();
+                    keySetup("menu");
+                    canvas.onkeydown = null;
                     return;
                 }
                 context.drawImage(invaderImg, invaders[i][j].x, invaders[i][j].y, invaderWidth, invaderHeight);
